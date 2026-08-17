@@ -1,0 +1,11 @@
+---
+// src/components/Footer.astro
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-purple-900/40 bg-slate-950 text-slate-400 py-8 px-6">
+	<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+		<p>© {currentYear} Lucas Art. All rights reserved.</p>
+		<p class="text-xs text-slate-500">Phoenix, Arizona • Photographer & Videographer</p>
+	</div>
+</footer>
