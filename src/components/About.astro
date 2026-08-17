@@ -1,0 +1,58 @@
+---
+// src/components/About.astro
+---
+
+<section id="about" class="py-24 px-6 max-w-7xl mx-auto">
+	<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+		
+		<!-- COLUMNA 1: IMAGE / PORTRAIT -->
+		<div class="relative group">
+			<!-- Glow morado de fondo -->
+			<div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-violet-500 rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+			
+			<div class="relative rounded-2xl overflow-hidden bg-slate-950 border border-purple-900/50 aspect-square flex items-center justify-center">
+				<img 
+					src="https://static.wixstatic.com/media/aa71f3_2b5ab5785b3549388e56ec7d071bcd6b~mv2.jpg/v1/fill/w_620,h_362,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/aa71f3_2b5ab5785b3549388e56ec7d071bcd6b~mv2.jpg" 
+					alt="Lucas - Photographer & Videographer" 
+					class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+				/>
+			</div>
+		</div>
+
+		<!-- COLUMNA 2: ABOUT CONTENT -->
+		<div class="space-y-6">
+			<span class="text-purple-400 font-semibold tracking-wider uppercase text-sm">
+				About Me
+			</span>
+
+			<h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+				Capturing moments & telling stories through the lens.
+			</h2>
+
+			<p class="text-slate-300 leading-relaxed">
+				My name is <strong class="text-white">Lucas</strong> and I am a Photographer/Videographer based in Phoenix, Arizona. I am passionate about storytelling and capturing the essence of a moment through the lens. I enjoy all subjects of photography in my work, but specialize in <span class="text-purple-400 font-medium">concert & event photography</span> as well as <span class="text-purple-400 font-medium">creative videography</span>.
+			</p>
+
+			<p class="text-slate-400 leading-relaxed">
+				Outside of my photography work, I enjoy playing guitar, writing poetry, attending concerts, and playing with my 5 dogs. I also love to travel and experience different cultures, food, and ways of life.
+			</p>
+
+			<blockquote class="border-l-2 border-purple-500 pl-4 py-1 text-slate-300 italic">
+				"Thank you for checking out my work!"
+			</blockquote>
+
+			<!-- FEATURE BADGES -->
+			<div class="grid grid-cols-2 gap-4 pt-2">
+				<div class="bg-slate-900/60 border border-purple-900/40 p-4 rounded-xl">
+					<span class="block text-xl font-bold text-purple-400">Phoenix, AZ</span>
+					<span class="text-xs text-slate-400">Location</span>
+				</div>
+				<div class="bg-slate-900/60 border border-purple-900/40 p-4 rounded-xl">
+					<span class="block text-xl font-bold text-purple-400">Concerts & Events</span>
+					<span class="text-xs text-slate-400">Specialty</span>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
