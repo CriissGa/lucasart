@@ -1,0 +1,244 @@
+---
+import { Image } from 'astro:assets';
+
+const allImages = import.meta.glob<{ default: ImageMetadata }>('/src/assets/collections/**/*.{jpeg,jpg,png,gif,webp,JPEG,JPG,PNG,GIF,WEBP}', { eager: true });
+const rawList = Object.values(allImages).map((mod) => mod.default);
+
+const localImages: ImageMetadata[] = [];
+const seenSrcs = new Set<string>();
+
+for (const img of rawList) {
+    if (img && img.src && !seenSrcs.has(img.src)) {
+        seenSrcs.add(img.src);
+        localImages.push(img);
+    }
+}
+
+const master10 = localImages.slice(0, 10);
+
+const bookPages = [
+    { front: master10[0], back: master10[1], labelFront: 'CONCERTS / LIVE', labelBack: 'LIFESTYLE' },
+    { front: master10[2], back: master10[3], labelFront: 'MODELING', labelBack: 'SKATE / STREET' },
+    { front: master10[4], back: master10[5], labelFront: 'STAGE LIGHTS', labelBack: 'ATMOSPHERE' },
+    { front: master10[6], back: master10[7], labelFront: 'EDITORIAL', labelBack: 'URBAN ACTION' },
+    { front: master10[8], back: master10[9], labelFront: 'CROWD MOMENTS', labelBack: 'RAW STORIES' },
+];
+---
+
+<section class="hero-container relative h-screen bg-black flex flex-col items-center justify-between overflow-hidden py-6">
+    
+    <!-- Encabezado -->
+    <div class="header-title text-center z-50 pointer-events-none relative pt-16">
+        <span class="text-red-600 font-mono text-[10px] sm:text-xs uppercase tracking-widest block mb-1 font-semibold">// Interactive Photobook</span>
+        <h1 class="text-4xl sm:text-6xl font-black text-white tracking-widest uppercase mb-2 leading-none">
+            LUCAS <span class="text-red-600">TAYLOR</span>
+        </h1>
+        <p class="scroll-instruction text-neutral-400 font-mono text-[11px] sm:text-xs tracking-wider uppercase">
+            Scroll to turn 5 pages & unbind 10 unique photos
+        </p>
+    </div>
+
+    <!-- Galería Revelada -->
+    <div class="revealed-gallery absolute inset-0 max-w-6xl mx-auto px-6 flex flex-col justify-center items-center pointer-events-none opacity-0 z-30">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 w-full">
+            {master10.map((img, i) => (
+                <div class={`gallery-card gallery-card-${i} group relative overflow-hidden rounded-lg border border-red-900/40 bg-neutral-950 shadow-md cursor-pointer pointer-events-auto`}>
+                    {img && (
+                        <Image 
+                            src={img} 
+                            alt={`Photo ${i+1}`}
+                            width={300}
+                            height={400}
+                            format="webp"
+                            class="bw-image w-full h-36 sm:h-52 object-cover pointer-events-auto" 
+                        />
+                    )}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-2 flex items-end opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <span class="text-[9px] font-mono text-red-500 uppercase font-bold">Photo #{i+1}</span>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+
+    <!-- Escena 3D del Libro -->
+    <div class="book-scene relative w-[240px] h-[330px] sm:w-[300px] sm:h-[410px] z-10 my-auto">
+        <div class="book-wrapper relative w-full h-full">
+            
+            <div class="book-floor-shadow absolute -bottom-8 left-1/2 -translate-x-1/2 w-4/5 h-10 bg-red-950/20 rounded-full"></div>
+
+            <!-- Tapa Trasera -->
+            <div class="page book-cover-back absolute inset-0 bg-neutral-950 rounded-r-2xl border-y border-r border-red-900/60 shadow-lg origin-left z-0">
+                <div class="w-full h-full p-6 flex flex-col justify-between bg-black">
+                    <span class="text-neutral-600 font-mono text-[9px] tracking-widest uppercase">Archive End</span>
+                    <div class="text-center">
+                        <span class="text-red-600/80 text-[10px] font-mono tracking-widest uppercase block mb-1">Vol. I Released</span>
+                        <p class="text-white text-xs font-bold uppercase tracking-wider">Lucas Taylor Portfolio</p>
+                    </div>
+                    <span class="text-neutral-700 font-mono text-[8px] tracking-widest uppercase text-right">10 Unique Photos</span>
+                </div>
+            </div>
+
+            <!-- 5 Hojas -->
+            {bookPages.map((pg, index) => (
+                <div 
+                    class={`page page-${index + 1} absolute inset-0 origin-left`}
+                    style={`z-index: ${20 - index};`}
+                >
+                    <div class="page-face page-front absolute inset-0 bg-neutral-900 rounded-r-xl border border-neutral-800 p-2 sm:p-3 shadow-md">
+                        <div class="group w-full h-full relative overflow-hidden rounded-lg bg-black pointer-events-auto cursor-pointer">
+                            {pg.front && (
+                                <Image 
+                                    src={pg.front} 
+                                    alt={pg.labelFront}
+                                    width={400}
+                                    height={550}
+                                    format="webp"
+                                    class="bw-image w-full h-full object-cover" 
+                                />
+                            )}
+                        </div>
+                    </div>
+
+                    <div class="page-face page-back absolute inset-0 bg-neutral-900 rounded-l-xl border border-neutral-800 p-2 sm:p-3 shadow-md">
+                        <div class="group w-full h-full relative overflow-hidden rounded-lg bg-black pointer-events-auto cursor-pointer">
+                            {pg.back && (
+                                <Image 
+                                    src={pg.back} 
+                                    alt={pg.labelBack}
+                                    width={400}
+                                    height={550}
+                                    format="webp"
+                                    class="bw-image w-full h-full object-cover" 
+                                />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ))}
+
+            <!-- Tapa Frontal -->
+            <div class="page book-cover-front absolute inset-0 origin-left z-30">
+                <div class="page-face page-front absolute inset-0 bg-neutral-950 rounded-r-2xl border-2 border-red-700/60 p-5 sm:p-6 flex flex-col justify-between shadow-xl">
+                    <div class="border border-red-900/40 h-full rounded-xl p-5 flex flex-col justify-between bg-neutral-900/50 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-red-500 font-bold">// Selected Works</span>
+                            <span class="w-2 h-2 rounded-full bg-red-600"></span>
+                        </div>
+                        
+                        <div>
+                            <h2 class="text-3xl sm:text-4xl font-black text-white tracking-widest uppercase leading-none mb-1">LUCAS</h2>
+                            <h2 class="text-3xl sm:text-4xl font-black text-red-600 tracking-widest uppercase leading-none mb-2">TAYLOR</h2>
+                            <p class="text-xs sm:text-sm font-bold text-neutral-400 tracking-wider uppercase">ART // PHOTOGRAPHY</p>
+                        </div>
+
+                        <div class="flex justify-between items-end border-t border-red-900/30 pt-3">
+                            <span class="text-[9px] text-neutral-400 font-mono tracking-widest uppercase">Vol. I // 2026</span>
+                            <span class="text-[9px] text-red-500 font-mono font-bold tracking-widest">5 PAGES / 10 PHOTOS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-face page-back absolute inset-0 bg-neutral-950 rounded-l-xl border border-neutral-800 p-4 shadow-xl flex items-center justify-center">
+                    <div class="text-center p-4 border border-red-900/20 rounded-lg bg-black">
+                        <span class="text-red-600 font-mono text-[10px] uppercase tracking-widest block mb-2">Portfolio</span>
+                        <p class="text-neutral-400 text-xs font-sans italic">"Selected Photographs"</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+    .book-scene {
+        perspective: 1200px;
+    }
+    
+    .book-wrapper {
+        transform-style: preserve-3d;
+    }
+
+    .page {
+        transform-style: preserve-3d;
+    }
+
+    .page-face {
+        backface-visibility: hidden !important;
+        -webkit-backface-visibility: hidden !important;
+        transform-style: flat;
+    }
+
+    .page-front {
+        transform: rotateY(0deg);
+    }
+
+    .page-back {
+        transform: rotateY(180deg);
+    }
+
+    .bw-image {
+        filter: grayscale(100%);
+        -webkit-filter: grayscale(100%);
+        transition: filter 0.4s ease, -webkit-filter 0.4s ease, transform 0.4s ease;
+        will-change: filter, transform;
+        transform: translateZ(0);
+    }
+
+    .bw-image:hover,
+    .group:hover .bw-image {
+        filter: grayscale(0%);
+        -webkit-filter: grayscale(0%);
+    }
+</style>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: '.hero-container',
+            start: 'top top',
+            end: '+=600', // Píxeles exactos de scroll para completar la animación sin huecos
+            scrub: 0.5,
+            pin: true,
+            pinSpacing: true, // Re-activado para empujar la siguiente sección limpiamente
+            anticipatePin: 1,
+            fastScrollEnd: true
+        }
+    });
+
+    tl.to('.book-wrapper', { x: '25%', duration: 1.5, ease: 'power1.inOut' }, 0)
+      .to('.book-cover-front', { rotateY: -180, duration: 2, ease: 'power1.inOut' }, 0)
+      .to('.page-1', { rotateY: -176, duration: 2, ease: 'power1.inOut' }, 1.2)
+      .to('.page-2', { rotateY: -172, duration: 2, ease: 'power1.inOut' }, 2.4)
+      .to('.page-3', { rotateY: -168, duration: 2, ease: 'power1.inOut' }, 3.6)
+      .to('.page-4', { rotateY: -164, duration: 2, ease: 'power1.inOut' }, 4.8)
+      .to('.page-5', { rotateY: -160, duration: 2, ease: 'power1.inOut' }, 6.0)
+
+      .to('.book-cover-front', { x: -400, opacity: 0, duration: 2.2, ease: 'power1.out' }, 7.2)
+      .to('.page-1', { x: 400, opacity: 0, duration: 2.2, ease: 'power1.out' }, 7.3)
+      .to('.page-2', { x: -350, opacity: 0, duration: 2.2, ease: 'power1.out' }, 7.4)
+      .to('.page-3', { x: 350, opacity: 0, duration: 2.2, ease: 'power1.out' }, 7.5)
+      .to('.page-4', { x: -300, opacity: 0, duration: 2.2, ease: 'power1.out' }, 7.6)
+      .to('.page-5', { x: 300, opacity: 0, duration: 2.2, ease: 'power1.out' }, 7.7)
+      .to('.book-cover-back', { opacity: 0, duration: 2.0, ease: 'power1.out' }, 7.8)
+
+      .to('.scroll-instruction', { opacity: 0, duration: 1.0, ease: 'power1.out' }, 7.2)
+
+      .to('.book-scene', { 
+          autoAlpha: 0, 
+          duration: 1.8, 
+          ease: 'power2.out' 
+      }, 7.8)
+      .to('.revealed-gallery', { 
+          autoAlpha: 1, 
+          pointerEvents: 'auto', 
+          duration: 2.0, 
+          ease: 'power2.out' 
+      }, 8.0);
+</script>
