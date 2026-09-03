@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+
+const allImages = import.meta.glob<{ default: ImageMetadata }>('/src/assets/collections/**/*.{jpeg,jpg,png,gif,webp,JPEG,JPG,PNG,GIF,WEBP}', { eager: true });
+
+const collectionsData = [
+    {
+        id: 'concerts',
+        title: 'Concerts',
+        category: 'Music & Stage',
+        folderName: 'concerts',
+        description: 'High-energy live performance captures, stage lighting, and crowd moments.'
+    },
+    {
+        id: 'lifestyle',
+        title: 'Lifestyle',
+        category: 'Storytelling & Atmosphere',
+        folderName: 'lifestyle',
+        description: 'Candid moments, everyday aesthetics, and authentic visual narrative.'
+    },
+    {
+        id: 'modeling',
+        title: 'Modeling',
+        category: 'Portraiture & Fashion',
+        folderName: 'modeling',
+        description: 'Stylized studio and outdoor portraits, creative direction, and lookbooks.'
+    },
+    {
+        id: 'skate',
+        title: 'Skate',
+        category: 'Action & Street',
+        folderName: 'skate',
+        description: 'Raw street photography, tricks, and skate culture moments.'
+    }
+];
+
+const collections = collectionsData.map((col) => {
+    const images = Object.keys(allImages)
+        .filter((path) => path.toLowerCase().includes(`/${col.folderName.toLowerCase()}/`))
+        .map((path) => allImages[path].default);
+
+    return {
+        ...col,
+        coverImage: images[0],
+        totalPhotos: images.length
+    };
+});
+---
+
+<section class="py-20 px-6 max-w-7xl mx-auto">
+    <div class="mb-14 text-center max-w-2xl mx-auto space-y-3">
+        <span class="text-red-600 font-mono text-xs uppercase tracking-widest font-semibold">// Portfolio Archives</span>
+        <h2 class="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight">Featured Collections</h2>
+        <p class="text-neutral-400 font-sans text-sm sm:text-base leading-relaxed">
+            Explore selected works categorized by style, atmosphere, and visual narrative.
+        </p>
+    </div>
+
+    <!-- Grid ajustado a 4 columnas en pantallas grandes (1 en móvil, 2 en tablet) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {collections.map((item) => (
+            <div class="group relative bg-neutral-950 border border-red-950/50 rounded-xl overflow-hidden hover:border-red-600/60 transition duration-300 flex flex-col shadow-xl shadow-black/80">
+                
+                <!-- Portada de la tarjeta -->
+                <div class="relative aspect-[4/3] sm:aspect-[3/4] overflow-hidden bg-black">
+                    {item.coverImage ? (
+                        <Image 
+                            src={item.coverImage} 
+                            alt={item.title} 
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-85 group-hover:opacity-100 grayscale group-hover:grayscale-0"
+                        />
+                    ) : (
+                        <div class="w-full h-full flex flex-col items-center justify-center text-neutral-600 text-xs font-mono bg-neutral-900/40">
+                            <span>NO IMAGES</span>
+                            <span class="text-[10px] text-red-900/60 mt-1">/src/assets/collections/{item.folderName}/</span>
+                        </div>
+                    )}
+                    
+                    <!-- Insignia de conteo de fotos -->
+                    <span class="absolute top-3 right-3 bg-black/80 backdrop-blur-md text-red-400 font-mono text-[10px] px-2.5 py-1 rounded border border-red-900/40 font-semibold tracking-wider uppercase">
+                        {item.totalPhotos} Photos
+                    </span>
+                </div>
+
+                <!-- Contenido de la tarjeta -->
+                <div class="p-5 flex flex-col justify-between flex-grow">
+                    <div>
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-red-500 font-semibold block mb-1">
+                            {item.category}
+                        </span>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-red-500 transition-colors uppercase tracking-wide">
+                            {item.title}
+                        </h3>
+                        <p class="text-neutral-400 text-xs leading-relaxed mb-6 font-sans">
+                            {item.description}
+                        </p>
+                    </div>
+
+                    <!-- Enlace a la colección -->
+                    <a 
+                        href={`/collections/${item.id}`} 
+                        class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-300 group-hover:text-red-500 transition-colors mt-auto pt-2 border-t border-neutral-900"
+                    >
+                        View Archive 
+                        <span class="group-hover:translate-x-1.5 transition-transform duration-200 text-red-600">→</span>
+                    </a>
+                </div>
+
+            </div>
+        ))}
+    </div>
+</section>
