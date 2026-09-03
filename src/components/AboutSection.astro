@@ -1,29 +1,22 @@
 ---
 // src/components/About.astro
+import { Image } from 'astro:assets';
+import lucasContactImg from '../assets/images/lucas2.png';
 ---
 
-<section id="about" class="py-24 px-6 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        
-        <!-- COLUMNA 1: IMAGE / PORTRAIT -->
-        <div class="relative group">
-            <!-- Glow rojo de fondo -->
-            <div class="absolute -inset-1 bg-gradient-to-r from-red-700 to-red-900 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-            
-            <div class="relative rounded-2xl overflow-hidden bg-neutral-950 border border-red-900/40 aspect-square flex items-center justify-center shadow-2xl shadow-red-950/20">
-                <img 
-                    src="https://static.wixstatic.com/media/aa71f3_2b5ab5785b3549388e56ec7d071bcd6b~mv2.jpg/v1/fill/w_620,h_362,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/aa71f3_2b5ab5785b3549388e56ec7d071bcd6b~mv2.jpg" 
-                    alt="Lucas - Photographer & Videographer" 
-                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0"
-                />
-            </div>
-        </div>
+<section id="about" class="py-12 sm:py-16 lg:py-20 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.15fr] gap-8 lg:gap-10 items-center">
+
+       <figure class="relative flex justify-center lg:justify-end w-full">
+    <Image
+        src={lucasContactImg}
+        alt="Lucas - Photographer & Videographer"
+        class="about-image w-full max-w-[440px] h-auto object-contain rounded-2xl shadow-2xl"
+    />
+</figure>
 
         <!-- COLUMNA 2: ABOUT CONTENT -->
         <div class="space-y-6">
-            <span class="text-red-500 font-mono tracking-widest uppercase text-xs font-semibold">
-                // About Me
-            </span>
 
             <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white uppercase">
                 Capturing moments & telling stories through the lens.
@@ -56,3 +49,17 @@
 
     </div>
 </section>
+
+<style>
+    .about-image {
+        -webkit-mask-image: linear-gradient(to left, transparent 0%, black 18%, black 100%);
+        mask-image: linear-gradient(to left, transparent 0%, black 18%, black 100%);
+
+        filter: grayscale(100%);
+        transition: filter 0.4s ease;
+    }
+
+    .about-image:hover {
+        filter: grayscale(0%);
+    }
+</style>

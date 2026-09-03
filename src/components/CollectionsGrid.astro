@@ -12,24 +12,17 @@ const collectionsData = [
         description: 'High-energy live performance captures, stage lighting, and crowd moments.'
     },
     {
-        id: 'lifestyle',
-        title: 'Lifestyle',
-        category: 'Storytelling & Atmosphere',
-        folderName: 'lifestyle',
-        description: 'Candid moments, everyday aesthetics, and authentic visual narrative.'
-    },
-    {
-        id: 'modeling',
-        title: 'Modeling',
+        id: 'portraits',
+        title: 'Portraits',
         category: 'Portraiture & Fashion',
-        folderName: 'modeling',
+        folderName: 'portraits',
         description: 'Stylized studio and outdoor portraits, creative direction, and lookbooks.'
     },
     {
-        id: 'skate',
-        title: 'Skate',
+        id: 'street',
+        title: 'Street',
         category: 'Action & Street',
-        folderName: 'skate',
+        folderName: 'street',
         description: 'Raw street photography, tricks, and skate culture moments.'
     }
 ];
@@ -49,7 +42,6 @@ const collections = collectionsData.map((col) => {
 
 <section class="py-20 px-6 max-w-7xl mx-auto">
     <div class="mb-14 text-center max-w-2xl mx-auto space-y-3">
-        <span class="text-red-600 font-mono text-xs uppercase tracking-widest font-semibold">// Portfolio Archives</span>
         <h2 class="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight">Featured Collections</h2>
         <p class="text-neutral-400 font-sans text-sm sm:text-base leading-relaxed">
             Explore selected works categorized by style, atmosphere, and visual narrative.
@@ -57,7 +49,7 @@ const collections = collectionsData.map((col) => {
     </div>
 
     <!-- Grid ajustado a 4 columnas en pantallas grandes (1 en móvil, 2 en tablet) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {collections.map((item) => (
             <div class="group relative bg-neutral-950 border border-red-950/50 rounded-xl overflow-hidden hover:border-red-600/60 transition duration-300 flex flex-col shadow-xl shadow-black/80">
                 
