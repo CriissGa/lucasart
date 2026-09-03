@@ -3,19 +3,19 @@ import { Image } from 'astro:assets';
 import lucasHeroImg from '../assets/images/lucas1.png';
 ---
 
-<section id="hero-section" class="relative min-h-screen bg-black text-white flex items-center justify-center px-6 sm:px-12 py-16 overflow-hidden">
+<section id="hero-section" class="relative z-0 mt-[600px] min-h-0 bg-black text-white flex items-center justify-center px-6 sm:px-12 py-12 sm:py-16 overflow-hidden">
     
     <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f1f1f12_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f12_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
 
     <div class="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         
-        <div class="lg:col-span-7 space-y-6 text-left">
+        <div class="lg:col-span-7 min-w-0 space-y-6 text-left">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-red-900/50 bg-neutral-950/80">
                 <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
                 <span class="text-xs font-mono text-neutral-300 uppercase tracking-widest">Photographer & Videographer</span>
             </div>
 
-            <h1 class="text-5xl sm:text-7xl font-black uppercase tracking-wider leading-none">
+            <h1 class="max-w-full break-words text-5xl sm:text-7xl font-black uppercase tracking-wider leading-none">
                 LUCAS <br />
                 <span class="text-red-600">TAYLOR</span>
             </h1>
@@ -55,25 +55,20 @@ import lucasHeroImg from '../assets/images/lucas1.png';
             </div>
         </div>
 
-        <div class="lg:col-span-5 relative group">
-            <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-neutral-900 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-            
-            <div class="relative overflow-hidden rounded-xl border border-red-900/40 bg-neutral-950 shadow-2xl">
-                <Image 
-                    src={lucasHeroImg} 
-                    alt="Lucas Photographer Hero" 
-                    width={500} 
-                    height={650} 
-                    format="webp" 
-                    class="bw-image w-full h-[450px] sm:h-[500px] object-cover"
-                />
-                
-                <div class="absolute bottom-4 left-4 right-4 bg-black/80 backdrop-blur-md p-3 rounded-lg border border-neutral-800 flex justify-between items-center">
-                    <span class="text-[10px] font-mono text-neutral-300 uppercase tracking-widest font-semibold">// Lucas Photography</span>
-                    <span class="text-[9px] font-mono text-red-500 font-bold uppercase">AZ / USA</span>
-                </div>
-            </div>
-        </div>
+        <figure class="lg:col-span-5 relative flex justify-center">
+    <Image
+        src={lucasHeroImg}
+        alt="Lucas, fotógrafo y videógrafo"
+        class="bw-image edge-fade w-full max-w-[500px] h-auto object-contain"
+        sizes="(min-width: 1024px) 42vw, 100vw"
+        loading="eager"
+        decoding="async"
+    />
+
+    <figcaption class="sr-only">
+        Lucas Photography, Phoenix, Arizona
+    </figcaption>
+</figure>
 
     </div>
 </section>
@@ -90,5 +85,18 @@ import lucasHeroImg from '../assets/images/lucas1.png';
     .bw-image:hover {
         filter: grayscale(0%);
         -webkit-filter: grayscale(0%);
+    }
+        .edge-fade {
+    -webkit-mask-image:
+        linear-gradient(to right, transparent 0%, black 14%, black 100%),
+        linear-gradient(to top, transparent 0%, black 16%, black 100%);
+
+    mask-image:
+        linear-gradient(to right, transparent 0%, black 14%, black 100%),
+        linear-gradient(to top, transparent 0%, black 16%, black 100%);
+
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
     }
 </style>
