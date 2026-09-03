@@ -1,0 +1,98 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { Image } from 'astro:assets';
+
+// Carga global de imágenes incluyendo extensiones en minúsculas y mayúsculas
+const allImages = import.meta.glob<{ default: ImageMetadata }>('/src/assets/collections/**/*.{jpeg,jpg,png,gif,webp,JPEG,JPG,PNG,GIF,WEBP}', { eager: true });
+
+// Rutas estáticas con las 4 nuevas categorías
+export function getStaticPaths() {
+    return [
+        { 
+            params: { id: 'concerts' }, 
+            props: { 
+                title: 'Concerts', 
+                folderName: 'concerts', 
+                description: 'High-energy live performance captures, stage lighting, and crowd moments.' 
+            } 
+        },
+        { 
+            params: { id: 'lifestyle' }, 
+            props: { 
+                title: 'Lifestyle', 
+                folderName: 'lifestyle', 
+                description: 'Candid moments, everyday aesthetics, and authentic visual narrative.' 
+            } 
+        },
+        { 
+            params: { id: 'modeling' }, 
+            props: { 
+                title: 'Modeling', 
+                folderName: 'modeling', 
+                description: 'Stylized studio and outdoor portraits, creative direction, and lookbooks.' 
+            } 
+        },
+        { 
+            params: { id: 'skate' }, 
+            props: { 
+                title: 'Skate', 
+                folderName: 'skate', 
+                description: 'Raw street photography, tricks, and skate culture moments.' 
+            } 
+        },
+    ];
+}
+
+const { title, folderName, description } = Astro.props;
+
+// Filtrado de imágenes de la subcarpeta correspondiente
+const collectionImages = Object.keys(allImages)
+    .filter((path) => path.toLowerCase().includes(`/${folderName.toLowerCase()}/`))
+    .map((path) => allImages[path].default);
+---
+
+<Layout title={`${title} Collection - Lucas Art`}>
+    <Navbar />
+    
+    <main class="py-16 px-6 max-w-7xl mx-auto min-h-screen">
+        <!-- Botón de regreso -->
+        <a 
+            href="/collections" 
+            class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-400 hover:text-red-500 transition-colors mb-10 group"
+        >
+            <span class="group-hover:-translate-x-1 transition-transform duration-200 text-red-600">←</span> Back to Collections
+        </a>
+
+        <!-- Encabezado de la colección -->
+        <header class="mb-12 space-y-2">
+            <span class="text-red-600 font-mono text-xs uppercase tracking-widest font-semibold">// Category Archive</span>
+            <h1 class="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight">{title}</h1>
+            <p class="text-neutral-400 text-sm sm:text-base max-w-2xl font-sans leading-relaxed">{description}</p>
+        </header>
+
+        <!-- Galería tipo Masonry -->
+        {collectionImages.length > 0 ? (
+            <div class="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6">
+                {collectionImages.map((img) => (
+                    <div class="overflow-hidden rounded-xl border border-red-950/40 bg-neutral-950 group shadow-lg shadow-black/80">
+                        <Image 
+                            src={img} 
+                            alt={`${title} photo`} 
+                            class="w-full h-auto object-cover group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
+                        />
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <div class="p-12 text-center border border-dashed border-red-900/40 rounded-xl bg-neutral-950/50">
+                <p class="text-neutral-500 font-mono text-sm">
+                    No images found in <span class="text-red-500">/src/assets/collections/{folderName}/</span>
+                </p>
+            </div>
+        )}
+    </main>
+
+    <Footer />
+</Layout>

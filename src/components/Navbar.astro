@@ -2,27 +2,24 @@
 // src/components/Navbar.astro
 ---
 
-<!-- 'fixed top-0 left-0 w-full': Deja la barra pegada arriba en toda la pantalla -->
-<!-- 'bg-slate-900/90 backdrop-blur-md': Fondo oscuro semi-transparente con efecto borroso -->
-<!-- 'z-50': Hace que la barra siempre quede por encima de las imágenes u otro contenido -->
-<header class="fixed top-0 left-0 w-full bg-slate-900/90 backdrop-blur-md text-white z-50 border-b border-slate-800">
-	<div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">		
+<header class="fixed top-0 left-0 w-full bg-black/80 backdrop-blur-md text-white z-50 border-b border-red-950/60 shadow-lg shadow-black/50">
+	<div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"> 	
+		
 		<!-- LOGO -->
-		<a href="#" class="text-2xl tracking-wider text-purple-400">
-			LUCAS TAYLOR <span class="text-white">PHOTOGRAPHY</span>
+		<a href="/" class="text-xl sm:text-2xl font-black tracking-widest text-white uppercase group">
+			TAYLOR LUCAS <span class="text-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] group-hover:text-red-500 transition-colors">PHOTOGRAPHY</span>
 		</a>
 
 		<!-- ENLACES DEL MENÚ -->
-		<nav class="hidden md:flex items-center space-x-8 font-medium">
-			<!-- 'hover:text-amber-400': Cambia de color a dorado al pasar el mouse -->
-			<a href="/portfolio" class="hover:text-purple-400 transition-colors">Portfolio</a>
-			<a href="/about" class="hover:text-purple-400 transition-colors">About</a>
-			<a href="/collections" class="hover:text-purple-400 transition-colors">Collections</a>
+		<nav class="hidden md:flex items-center space-x-8 text-sm font-mono tracking-wider uppercase">
+			<a href="/about" class="text-neutral-300 hover:text-red-500 transition-colors">Portfolio</a>
+			<a href="/about" class="text-neutral-300 hover:text-red-500 transition-colors">About</a>
+			<a href="/collections" class="text-neutral-300 hover:text-red-500 transition-colors">Collections</a>
 			
-			<!-- BOTÓN DE CONTACTO DESTACADO -->
+			<!-- BOTÓN DE CONTACTO DESTACADO EN ROJO -->
 			<a 
 				href="/contact" 
-				class="bg-gray-400 text-slate-900 px-5 py-2 rounded-full  hover:bg-purple-300 transition-colors shadow-md"
+				class="bg-red-600 hover:bg-red-700 text-white font-sans font-semibold px-5 py-2 rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:shadow-[0_0_20px_rgba(220,38,38,0.7)]"
 			>
 				Contact
 			</a>
