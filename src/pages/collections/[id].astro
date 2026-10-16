@@ -2,19 +2,17 @@
 import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
-import { Image } from 'astro:assets';
+import Image from '../../components/PortfolioImage.astro';
+import {getCollection} from '../../lib/sanity.js';
 
-// Carga global de imágenes incluyendo extensiones en minúsculas y mayúsculas
-const allImages = import.meta.glob<{ default: ImageMetadata }>('/src/assets/collections/**/*.{jpeg,jpg,png,gif,webp,JPEG,JPG,PNG,GIF,WEBP}', { eager: true });
-
-// Rutas estáticas con las 4 nuevas categorías
+// Static routes for the three portfolio categories.
 export function getStaticPaths() {
     return [
         { 
             params: { id: 'concerts' }, 
             props: { 
                 title: 'Concerts', 
-                folderName: 'concerts', 
+                category: 'concerts',
                 description: 'High-energy live performance captures, stage lighting, and crowd moments.' 
             } 
         },
@@ -22,7 +20,7 @@ export function getStaticPaths() {
             params: { id: 'portraits' }, 
             props: { 
                 title: 'Portraits', 
-                folderName: 'portraits', 
+                category: 'portraits',
                 description: 'Stylized studio and outdoor portraits, creative direction, and lookbooks.' 
             } 
         },
@@ -30,19 +28,19 @@ export function getStaticPaths() {
             params: { id: 'street' }, 
             props: { 
                 title: 'Street', 
-                folderName: 'street', 
+                category: 'street',
                 description: 'Raw street photography, tricks, and skate culture moments.' 
             } 
         },
     ];
 }
 
-const { title, folderName, description } = Astro.props;
+const { category } = Astro.props;
+const published = await getCollection(category);
+const title = published?.title || Astro.props.title;
+const description = published?.description ?? Astro.props.description;
 
-// Filtrado de imágenes de la subcarpeta correspondiente
-const collectionImages = Object.keys(allImages)
-    .filter((path) => path.toLowerCase().includes(`/${folderName.toLowerCase()}/`))
-    .map((path) => allImages[path].default);
+const collectionImages = published?.photos ?? [];
 ---
 
 <Layout title={`${title} Collection - Lucas Art`}>
@@ -80,7 +78,7 @@ const collectionImages = Object.keys(allImages)
         ) : (
             <div class="p-12 text-center border border-dashed border-red-900/40 rounded-xl bg-neutral-950/50">
                 <p class="text-neutral-500 font-mono text-sm">
-                    No images found in <span class="text-red-500">/src/assets/collections/{folderName}/</span>
+                    No photos published in this collection yet.
                 </p>
             </div>
         )}

@@ -1,28 +1,20 @@
 ---
-import { Image } from 'astro:assets';
+import Image from './PortfolioImage.astro';
+import {getSanityContent} from '../lib/sanity.js';
 
-const allImages = import.meta.glob<{ default: ImageMetadata }>('/src/assets/collections/**/*.{jpeg,jpg,png,gif,webp,JPEG,JPG,PNG,GIF,WEBP}', { eager: true });
-const rawList = Object.values(allImages).map((mod) => mod.default);
-
-const localImages: ImageMetadata[] = [];
-const seenSrcs = new Set<string>();
-
-for (const img of rawList) {
-    if (img && img.src && !seenSrcs.has(img.src)) {
-        seenSrcs.add(img.src);
-        localImages.push(img);
-    }
+const {book} = await getSanityContent();
+if (book && book.photos?.length !== 10) {
+    throw new Error('Sanity BookHero must have exactly 10 published photos.');
 }
+const fixedBookImages = book?.photos ?? [];
 
-const fixedBookImages = localImages.slice(0, 10);
-
-const bookPages = [
+const bookPages = fixedBookImages.length ? [
     { front: fixedBookImages[0], back: fixedBookImages[1], labelFront: 'CONCERTS / LIVE', labelBack: 'LIFESTYLE' },
     { front: fixedBookImages[2], back: fixedBookImages[3], labelFront: 'MODELING', labelBack: 'SKATE / STREET' },
     { front: fixedBookImages[4], back: fixedBookImages[5], labelFront: 'STAGE LIGHTS', labelBack: 'ATMOSPHERE' },
     { front: fixedBookImages[6], back: fixedBookImages[7], labelFront: 'EDITORIAL', labelBack: 'URBAN ACTION' },
     { front: fixedBookImages[8], back: fixedBookImages[9], labelFront: 'CROWD MOMENTS', labelBack: 'RAW STORIES' },
-];
+] : [];
 ---
 
 <section class="hero-container relative z-20 h-screen bg-black flex flex-col items-center justify-start overflow-hidden py-6">
@@ -34,6 +26,8 @@ const bookPages = [
             LUCAS <span class="text-red-600">TAYLOR</span>
         </h1>
     </div>
+
+    {!book && <p class="mt-12 text-neutral-400">No photos published in the photobook yet.</p>}
 
     <!-- Galería Revelada -->
     <div class="revealed-gallery absolute inset-0 max-w-6xl mx-auto px-6 flex flex-col justify-center md:translate-y-12 items-center pointer-events-none opacity-0 z-30">
@@ -59,7 +53,7 @@ const bookPages = [
     </div>
 
     <!-- Escena 3D del Libro -->
-    <div class="book-scene relative mt-6 w-[260px] h-[360px] lg:w-[340px] lg:h-[465px] z-10">
+    <div hidden={!book} class="book-scene relative mt-6 w-[260px] h-[360px] lg:w-[340px] lg:h-[465px] z-10">
         <div class="book-wrapper relative w-full h-full">
             
             <div class="book-floor-shadow absolute -bottom-8 left-1/2 -translate-x-1/2 w-4/5 h-10 bg-red-950/20 rounded-full"></div>

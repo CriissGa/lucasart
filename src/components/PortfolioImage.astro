@@ -1,0 +1,22 @@
+---
+import {Image} from 'astro:assets';
+import {createImageUrlBuilder} from '@sanity/image-url';
+import {sanitySettings} from '../../sanity.config.mjs';
+
+const {src, alt = '', width = 1200, height, format, ...attributes} = Astro.props;
+const builder = createImageUrlBuilder(sanitySettings);
+const isSanity = Boolean(src?.asset?._ref);
+const dimensions = isSanity ? src.asset._ref.match(/-(\d+)x(\d+)-/) : null;
+const renderedHeight = height ?? (dimensions ? Math.round(width * Number(dimensions[2]) / Number(dimensions[1])) : undefined);
+let url;
+if (isSanity) {
+  let image = builder.image(src).width(width).auto('format').quality(85);
+  if (height) image = image.height(height).fit('crop');
+  url = image.url();
+}
+---
+{isSanity ? (
+  <img src={url} alt={src.alt || alt} width={width} height={renderedHeight} loading="lazy" decoding="async" {...attributes} />
+) : (
+  <Image src={src} alt={alt} width={width} height={height} format={format} {...attributes} />
+)}
