@@ -10,9 +10,9 @@ export default defineConfig({
   projectId: 'dlsh5m3v',
   dataset: 'production',
 
-  plugins: [structureTool({structure: (S) => S.list().title('Contenido').items([
-    S.listItem().title('Imágenes del sitio').child(S.document().schemaType('siteImages').documentId('siteImages')),
-    S.listItem().title('BookHero').child(S.document().schemaType('bookHero').documentId('24b4812d-561f-4e8d-a88f-91bce619453c').title('Fotos del libro')),
+  plugins: [structureTool({structure: (S) => S.list().title('Content').items([
+    S.listItem().title('Site images').child(S.document().schemaType('siteImages').documentId('siteImages')),
+    S.listItem().title('BookHero').child(S.document().schemaType('bookHero').documentId('24b4812d-561f-4e8d-a88f-91bce619453c').title('Book photos')),
     ...S.documentTypeListItems().filter((item) => !['siteImages', 'bookHero'].includes(item.getId() ?? '')),
   ])}), visionTool()],
 

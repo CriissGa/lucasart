@@ -7,9 +7,9 @@ export const bookHero = defineType({
   fields: [
     defineField({
       name: 'photos',
-      title: 'Fotos del libro',
+      title: 'Book photos',
       description:
-        'Añade exactamente 10 fotos. Arrástralas para ordenar las páginas.',
+        'Add exactly 10 photos. Drag them to change the page order.',
       type: 'array',
       of: [
         defineArrayMember({
@@ -17,11 +17,11 @@ export const bookHero = defineType({
           options: {hotspot: true},
           validation: (rule) => rule.required().assetRequired(),
           fields: [
-            defineField({name: 'title', title: 'Título de la foto', type: 'string'}),
-            defineField({name: 'category', title: 'Enlace a colección', type: 'string', options: {list: ['concerts', 'portraits', 'street']}}),
+            defineField({name: 'title', title: 'Photo title', type: 'string'}),
+            defineField({name: 'category', title: 'Collection link', type: 'string', options: {list: ['concerts', 'portraits', 'street']}}),
             defineField({
               name: 'alt',
-              title: 'Descripción de la imagen (opcional)',
+              title: 'Image description (optional)',
               type: 'string',
             }),
           ],
@@ -32,7 +32,7 @@ export const bookHero = defineType({
   ],
   preview: {
     prepare() {
-      return {title: 'Fotos del BookHero'}
+      return {title: 'BookHero photos'}
     },
   },
 })

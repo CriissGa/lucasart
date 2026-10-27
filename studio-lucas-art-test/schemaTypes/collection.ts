@@ -2,18 +2,18 @@ import {defineType, defineField, defineArrayMember} from 'sanity'
 
 export const collection = defineType({
   name: 'collection',
-  title: 'Colecciones',
+  title: 'Collections',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
-      title: 'Nombre',
+      title: 'Name',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'category',
-      title: 'Sección de la web',
+      title: 'Website section',
       type: 'string',
       options: {
         list: [
@@ -26,20 +26,20 @@ export const collection = defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Descripción',
+      title: 'Description',
       type: 'text',
     }),
     defineField({
       name: 'cover',
-      title: 'Portada',
+      title: 'Cover image',
       type: 'image',
       options: {hotspot: true},
       validation: (rule) => rule.required().assetRequired(),
     }),
     defineField({
       name: 'photos',
-      title: 'Fotos',
-      description: 'Arrastra las fotos para cambiar su orden.',
+      title: 'Photos',
+      description: 'Drag photos to change their order.',
       type: 'array',
       of: [
         defineArrayMember({
@@ -49,8 +49,8 @@ export const collection = defineType({
           fields: [
             defineField({
               name: 'alt',
-              title: 'Descripción de la imagen (opcional)',
-              description: 'Si quieres, describe brevemente qué aparece en la foto.',
+              title: 'Image description (optional)',
+              description: 'Optionally, briefly describe what is shown in the photo.',
               type: 'string',
             }),
           ],
