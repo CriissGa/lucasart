@@ -27,7 +27,7 @@ const { collection } = Astro.props;
       </div>
     </header>
     <section class="section-wrap py-12 sm:py-16" aria-label={`${collection.title} photo gallery`}>
-      <div class="mb-7 flex items-end justify-between gap-4" data-reveal><p class="eyebrow">Selected frames / {collection.photos.length}</p><p class="text-sm text-neutral-500">Lucas Taylor © 2026</p></div>
+      <div class="mb-7 flex items-end justify-between gap-4" data-reveal><p class="eyebrow">Selected frames / {collection.photos.length}</p><p class="text-sm text-neutral-500">Lucas Taylor © <span data-current-year>{new Date().getFullYear()}</span></p></div>
       <!-- Dos columnas con fotos de alturas naturales crean ritmo sin recortar la obra. -->
       <div class="columns-1 gap-5 space-y-5 sm:columns-2 lg:gap-7 lg:space-y-7">
         {collection.photos.map((img, index) => (

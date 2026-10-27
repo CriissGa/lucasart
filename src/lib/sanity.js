@@ -14,9 +14,17 @@ const contentQuery = defineQuery(`{
 
 // Share one request during a build; development fetches again on each page load.
 let buildContent;
+async function fetchContent() {
+  try {
+    return await sanityClient.fetch(contentQuery, {}, {timeout: 10000, maxRetries: 1});
+  } catch (error) {
+    console.warn('[Sanity] No se pudo cargar el contenido; se usarán las fotos locales.', error.message);
+    return {collections: [], book: null, siteImages: null};
+  }
+}
 export function getSanityContent() {
-  if (import.meta.env.DEV) return sanityClient.fetch(contentQuery);
-  return buildContent ??= sanityClient.fetch(contentQuery);
+  if (import.meta.env.DEV) return fetchContent();
+  return buildContent ??= fetchContent();
 }
 
 export async function getCollection(category) {

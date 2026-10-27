@@ -1,8 +1,8 @@
 ---
 import Image from './PortfolioImage.astro';
 import { getPortfolio } from '../data/content.js';
-import heroBackgroundFallback from '../assets/collections/concerts/DSC09979.jpg';
-import heroFeaturedFallback from '../assets/collections/portraits/DSC03613.jpg';
+import heroBackgroundFallback from '../assets/collections/concerts/DSC09979.webp';
+import heroFeaturedFallback from '../assets/collections/portraits/DSC03613.webp';
 const { siteImages } = await getPortfolio();
 ---
 
@@ -19,16 +19,14 @@ const { siteImages } = await getPortfolio();
         <a class="button-primary" href="/collections">Explore the work <span aria-hidden="true">↗</span></a>
         <a class="button-secondary" href="/contact">Let's collaborate</a>
       </div>
-      <p class="mt-16 text-xs uppercase tracking-[.28em] text-neutral-400">Scroll to discover <span aria-hidden="true">↓</span></p>
     </div>
     <div class="hidden justify-end lg:flex" data-book>
       <div class="relative w-[290px] rotate-[-6deg] border border-white/20 bg-neutral-950 p-3 shadow-[0_30px_100px_#000] xl:w-[340px]">
         <div class="relative aspect-[3/4] overflow-hidden">
           <Image src={siteImages.heroFeatured?.asset ? siteImages.heroFeatured : heroFeaturedFallback} alt="Fotografía seleccionada del archivo de Lucas Taylor" class="h-full w-full object-cover" widths={[400, 700]} sizes="340px" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-          <div class="absolute bottom-5 left-5 font-mono text-xs uppercase tracking-[.25em]">Selected works / Vol. 01</div>
         </div>
-        <div class="flex justify-between pt-3 font-mono text-[10px] uppercase tracking-widest text-neutral-400"><span>Lucas Taylor</span><span>2026</span></div>
+        <div class="flex justify-between pt-3 font-mono text-[10px] uppercase tracking-widest text-neutral-400"><span>Lucas Taylor</span><span data-current-year>{new Date().getFullYear()}</span></div>
       </div>
     </div>
   </div>

@@ -12,19 +12,19 @@ export const collections = [
   {
     id: 'concerts', title: 'Concerts', eyebrow: '01 / Music & stage',
     description: 'The heat, the lights, the seconds that make a show unforgettable.',
-    cover: photo('concerts/DSC09979.jpg'),
-    photos: ['DSC09979.jpg', 'DSC09894.jpg', 'DSC08835.jpg', 'DSC08057.jpg', 'DSC07974.jpg', 'DSC07593.jpg', 'DSC07103.jpg', 'DSC06776.jpg', 'DSC06261.jpg', 'DSC06186.jpg', 'DSC06010.jpg', 'DSC05645.jpg'].map((name) => photo(`concerts/${name}`)),
+    cover: photo('concerts/DSC09979.webp'),
+    photos: ['DSC09979.webp', 'DSC09894.webp', 'DSC08835.webp', 'DSC08057.webp', 'DSC07974.webp', 'DSC07593.webp', 'DSC07103.webp', 'DSC06776.webp', 'DSC06261.webp', 'DSC06186.webp', 'DSC06010.webp', 'DSC05645.webp'].map((name) => photo(`concerts/${name}`)),
   },
   {
     id: 'portraits', title: 'Portraits', eyebrow: '02 / People & presence',
     description: 'Portraits with atmosphere, personality and room to feel.',
-    cover: photo('portraits/DSC03613.jpg'),
-    photos: ['DSC03613.jpg', 'DSC03577.jpg', 'DSC03547.jpg', 'DSC03826.jpg', 'DSC06152.jpg', 'DSC06130.jpg', 'DSC06086.jpg', 'DSC05957.jpg', 'DSC05807.jpg', 'DSC05603.jpg', 'DSC05551.jpg', 'DSC05428.jpg'].map((name) => photo(`portraits/${name}`)),
+    cover: photo('portraits/DSC03613.webp'),
+    photos: ['DSC03613.webp', 'DSC03547.webp', 'DSC06152.webp', 'DSC06130.webp', 'DSC06086.webp', 'DSC05807.webp', 'DSC05603.webp', 'DSC05551.webp', 'DSC05428.webp'].map((name) => photo(`portraits/${name}`)),
   },
   {
     id: 'street', title: 'Street', eyebrow: '03 / Motion & city',
     description: 'Unscripted movement and the energy found between places.',
-    cover: photo('street/IMG_9221 - Copy.jpg'),
-    photos: ['IMG_9221 - Copy.jpg', 'IMG_9215 - Copy.jpg', 'IMG_9178 - Copy.jpg', 'IMG_9171 - Copy.jpg', 'IMG_9161 - Copy.jpg', 'IMG_9368 - Copy.jpg', 'IMG_9278 - Copy.jpg', 'IMG_9264 - Copy.jpg', 'IMG_9259 - Copy.jpg', 'IMG_9380 - Copy.jpg', 'IMG_9379 - Copy.jpg', 'IMG_9381 - Copy.jpg'].map((name) => photo(`street/${name}`)),
+    cover: photo('street/IMG_9221 - Copy.webp'),
+    photos: ['IMG_9221 - Copy.webp', 'IMG_9215 - Copy.webp', 'IMG_9178 - Copy.webp', 'IMG_9171 - Copy.webp', 'IMG_9161 - Copy.webp', 'IMG_9368 - Copy.webp', 'IMG_9278 - Copy.webp', 'IMG_9264 - Copy.webp', 'IMG_9259 - Copy.webp', 'IMG_9380 - Copy.webp', 'IMG_9379 - Copy.webp', 'IMG_9381 - Copy.webp'].map((name) => photo(`street/${name}`)),
   },
 ] as const;

@@ -16,7 +16,23 @@ if (isSanity) {
 }
 ---
 {isSanity ? (
-  <img src={url} srcset={widths?.map((size) => builder.image(src).width(size).auto('format').quality(85).url() + ' ' + size + 'w').join(', ')} alt={src.alt || alt} width={width} height={renderedHeight} loading="lazy" decoding="async" {...attributes} />
+  <img src={url} data-local-fallback={src.fallback?.src} srcset={widths?.map((size) => builder.image(src).width(size).auto('format').quality(85).url() + ' ' + size + 'w').join(', ')} alt={src.alt || alt} width={width} height={renderedHeight} loading="lazy" decoding="async" {...attributes} />
 ) : (
   <Image src={src} alt={alt} width={width} height={height} format={format} widths={widths} {...attributes} />
 )}
+<script>
+  function useLocalImage(image: HTMLImageElement) {
+    const fallback = image.dataset.localFallback;
+    if (!fallback) return;
+    delete image.dataset.localFallback;
+    image.removeAttribute('srcset');
+    image.removeAttribute('sizes');
+    image.src = fallback;
+  }
+  document.addEventListener('error', (event) => {
+    if (event.target instanceof HTMLImageElement) useLocalImage(event.target);
+  }, true);
+  document.querySelectorAll<HTMLImageElement>('img[data-local-fallback]').forEach((image) => {
+    if (image.complete && image.naturalWidth === 0) useLocalImage(image);
+  });
+</script>
