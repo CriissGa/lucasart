@@ -17,6 +17,8 @@ export const bookHero = defineType({
           options: {hotspot: true},
           validation: (rule) => rule.required().assetRequired(),
           fields: [
+            defineField({name: 'title', title: 'Título de la foto', type: 'string'}),
+            defineField({name: 'category', title: 'Enlace a colección', type: 'string', options: {list: ['concerts', 'portraits', 'street']}}),
             defineField({
               name: 'alt',
               title: 'Descripción de la imagen (opcional)',

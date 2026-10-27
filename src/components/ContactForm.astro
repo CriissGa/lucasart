@@ -1,29 +1,9 @@
 ---
-if (Astro.request.method === 'POST') {
-    try {
-        const data = await Astro.request.formData();
-
-        const firstname = data.get('first-name');
-        const lastname = data.get('last-name');
-        const email = data.get('email');
-        const subject = data.get('subject');
-        const message = data.get('message');
-
-        console.log({
-            firstname,
-            lastname,
-            email,
-            subject,
-            message
-        });
-    } catch (error) {
-        console.error('Error processing contact form:', error);
-    }
-}
+// La web es estática: el formulario prepara un correo real en la aplicación del visitante.
 ---
 
-<section class="relative isolate overflow-hidden bg-black px-6 py-24 text-white sm:py-32 lg:px-8">
-    <div class="mx-auto max-w-2xl text-center">
+<section class="relative isolate overflow-hidden bg-black px-6 py-14 text-white sm:py-20 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
 
         <h2 class="mt-3 text-4xl font-black uppercase tracking-tight text-white sm:text-5xl">
             Get In Touch
@@ -37,12 +17,12 @@ if (Astro.request.method === 'POST') {
             >
                 theresawinters101@gmail.com
             </a>
-            or fill out the form below.
+            or fill out the form below to open a ready-to-send email.
         </p>
     </div>
 
-    <form action="#" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
-        <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+    <form class="mx-auto mt-10 max-w-xl sm:mt-12" data-contact-form data-reveal>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
             <div>
                 <label
                     for="first-name"
@@ -142,7 +122,7 @@ if (Astro.request.method === 'POST') {
             </div>
         </div>
 
-        <div class="mt-10">
+        <div class="mt-7">
             <button
                 type="submit"
                 class="block w-full rounded bg-red-600 px-3.5 py-3 text-center text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-red-950/50 transition-colors hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
@@ -152,3 +132,17 @@ if (Astro.request.method === 'POST') {
         </div>
     </form>
 </section>
+
+<script>
+    // mailto abre el correo con todos los campos; no promete un envío desde un servidor inexistente.
+    document.querySelector<HTMLFormElement>('[data-contact-form]')?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = event.currentTarget as HTMLFormElement;
+        if (!form.reportValidity()) return;
+        const data = new FormData(form);
+        const name = `${data.get('first-name')} ${data.get('last-name')}`;
+        const subject = encodeURIComponent(String(data.get('subject')));
+        const body = encodeURIComponent(`From: ${name}\nEmail: ${data.get('email')}\n\n${data.get('message')}`);
+        window.location.href = `mailto:theresawinters101@gmail.com?subject=${subject}&body=${body}`;
+    });
+</script>

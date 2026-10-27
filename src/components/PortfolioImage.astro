@@ -3,7 +3,7 @@ import {Image} from 'astro:assets';
 import {createImageUrlBuilder} from '@sanity/image-url';
 import {sanitySettings} from '../../sanity.config.mjs';
 
-const {src, alt = '', width = 1200, height, format, ...attributes} = Astro.props;
+const {src, alt = '', width = 1200, height, format, widths, ...attributes} = Astro.props;
 const builder = createImageUrlBuilder(sanitySettings);
 const isSanity = Boolean(src?.asset?._ref);
 const dimensions = isSanity ? src.asset._ref.match(/-(\d+)x(\d+)-/) : null;
@@ -16,7 +16,7 @@ if (isSanity) {
 }
 ---
 {isSanity ? (
-  <img src={url} alt={src.alt || alt} width={width} height={renderedHeight} loading="lazy" decoding="async" {...attributes} />
+  <img src={url} srcset={widths?.map((size) => builder.image(src).width(size).auto('format').quality(85).url() + ' ' + size + 'w').join(', ')} alt={src.alt || alt} width={width} height={renderedHeight} loading="lazy" decoding="async" {...attributes} />
 ) : (
-  <Image src={src} alt={alt} width={width} height={height} format={format} {...attributes} />
+  <Image src={src} alt={alt} width={width} height={height} format={format} widths={widths} {...attributes} />
 )}

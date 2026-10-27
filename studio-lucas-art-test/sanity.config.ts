@@ -10,7 +10,10 @@ export default defineConfig({
   projectId: 'dlsh5m3v',
   dataset: 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [structureTool({structure: (S) => S.list().title('Contenido').items([
+    S.listItem().title('Imágenes del sitio').child(S.document().schemaType('siteImages').documentId('siteImages')),
+    ...S.documentTypeListItems().filter((item) => item.getId() !== 'siteImages'),
+  ])}), visionTool()],
 
   schema: {
     types: schemaTypes,

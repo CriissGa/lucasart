@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+interface Props { title?: string; description?: string }
+const { title = 'Lucas Taylor | Photographer & Videographer', description = 'Concert, portrait and street photography by Lucas Taylor in Phoenix, Arizona.' } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -9,7 +11,8 @@ import '../styles/global.css';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Taylor Lucas Photography</title>
+		<title>{title}</title>
+		<meta name="description" content={description} />
 
 		<!-- Cargar Google Fonts (Plus Jakarta Sans) -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +22,17 @@ import '../styles/global.css';
 	</head>
 	<body>
 		<slot />
+		<script>
+			import gsap from 'gsap';
+			import { ScrollTrigger } from 'gsap/ScrollTrigger';
+			gsap.registerPlugin(ScrollTrigger);
+			// Todos los elementos marcados aparecen al entrar en pantalla; respeta movimiento reducido.
+			if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
+					gsap.from(element, { y: 36, opacity: 0, duration: .8, ease: 'power2.out', scrollTrigger: { trigger: element, start: 'top 88%', once: true } });
+				});
+			}
+		</script>
 	</body>
 </html>
 

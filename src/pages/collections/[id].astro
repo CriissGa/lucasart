@@ -3,86 +3,44 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import Image from '../../components/PortfolioImage.astro';
-import {getCollection} from '../../lib/sanity.js';
+import { getPortfolio } from '../../data/content.js';
 
-// Static routes for the three portfolio categories.
-export function getStaticPaths() {
-    return [
-        { 
-            params: { id: 'concerts' }, 
-            props: { 
-                title: 'Concerts', 
-                category: 'concerts',
-                description: 'High-energy live performance captures, stage lighting, and crowd moments.' 
-            } 
-        },
-        { 
-            params: { id: 'portraits' }, 
-            props: { 
-                title: 'Portraits', 
-                category: 'portraits',
-                description: 'Stylized studio and outdoor portraits, creative direction, and lookbooks.' 
-            } 
-        },
-        { 
-            params: { id: 'street' }, 
-            props: { 
-                title: 'Street', 
-                category: 'street',
-                description: 'Raw street photography, tricks, and skate culture moments.' 
-            } 
-        },
-    ];
+// Astro genera una ruta por serie a partir de la selección central.
+export async function getStaticPaths() {
+  const { collections } = await getPortfolio();
+  return collections.map((collection) => ({ params: { id: collection.id }, props: { collection } }));
 }
-
-const { category } = Astro.props;
-const published = await getCollection(category);
-const title = published?.title || Astro.props.title;
-const description = published?.description ?? Astro.props.description;
-
-const collectionImages = published?.photos ?? [];
+const { collection } = Astro.props;
 ---
 
-<Layout title={`${title} Collection - Lucas Art`}>
-    <Navbar />
-    
-    <main class="py-16 px-6 max-w-7xl mx-auto min-h-screen">
-        <!-- Botón de regreso -->
-        <a 
-            href="/collections" 
-            class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-400 hover:text-red-500 transition-colors mb-10 group"
-        >
-            <span class="group-hover:-translate-x-1 transition-transform duration-200 text-red-600">←</span> Back to Collections
-        </a>
-
-        <!-- Encabezado de la colección -->
-        <header class="mb-12 space-y-2">
-            <span class="text-red-600 font-mono text-xs uppercase tracking-widest font-semibold">// Category Archive</span>
-            <h1 class="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight">{title}</h1>
-            <p class="text-neutral-400 text-sm sm:text-base max-w-2xl font-sans leading-relaxed">{description}</p>
-        </header>
-
-        <!-- Galería tipo Masonry -->
-        {collectionImages.length > 0 ? (
-            <div class="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6">
-                {collectionImages.map((img) => (
-                    <div class="overflow-hidden rounded-xl border border-red-950/40 bg-neutral-950 group shadow-lg shadow-black/80">
-                        <Image 
-                            src={img} 
-                            alt={`${title} photo`} 
-                            class="w-full h-auto object-cover group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
-                        />
-                    </div>
-                ))}
-            </div>
-        ) : (
-            <div class="p-12 text-center border border-dashed border-red-900/40 rounded-xl bg-neutral-950/50">
-                <p class="text-neutral-500 font-mono text-sm">
-                    No photos published in this collection yet.
-                </p>
-            </div>
-        )}
-    </main>
-
-    <Footer />
+<Layout title={`${collection.title} | Lucas Taylor Photography`} description={collection.description}>
+  <Navbar />
+  <main>
+    <header class="relative isolate flex min-h-[70svh] items-end overflow-hidden">
+      <Image src={collection.cover} alt={`${collection.title} collection cover`} class="absolute inset-0 h-full w-full object-cover opacity-75" widths={[640, 1200, 1920]} sizes="100vw" loading="eager" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/25"></div>
+      <div class="section-wrap relative pb-12 pt-28" data-reveal>
+        <a href="/collections" class="mb-7 inline-block text-xs font-bold uppercase tracking-widest text-white hover:text-red-400">← All collections</a>
+        <p class="eyebrow mb-4">{collection.eyebrow}</p>
+        <h1 class="display-title">{collection.title}</h1>
+        <p class="mt-6 max-w-lg text-lg text-neutral-200">{collection.description}</p>
+      </div>
+    </header>
+    <section class="section-wrap py-12 sm:py-16" aria-label={`${collection.title} photo gallery`}>
+      <div class="mb-7 flex items-end justify-between gap-4" data-reveal><p class="eyebrow">Selected frames / {collection.photos.length}</p><p class="text-sm text-neutral-500">Lucas Taylor © 2026</p></div>
+      <!-- Dos columnas con fotos de alturas naturales crean ritmo sin recortar la obra. -->
+      <div class="columns-1 gap-5 space-y-5 sm:columns-2 lg:gap-7 lg:space-y-7">
+        {collection.photos.map((img, index) => (
+          <figure class="group break-inside-avoid overflow-hidden bg-neutral-900" data-reveal>
+            <Image src={img} alt={`${collection.title} photograph ${index + 1} by Lucas Taylor`} class="h-auto w-full transition-transform duration-700 group-hover:scale-[1.025]" widths={[500, 900, 1400]} sizes="(min-width: 640px) 50vw, 100vw" loading="lazy" />
+          </figure>
+        ))}
+      </div>
+      <div class="mt-14 border-t border-white/15 pt-8 text-center" data-reveal>
+        <p class="eyebrow mb-4">Have a project in mind?</p>
+        <a class="button-primary" href="/contact">Let's make something ↗</a>
+      </div>
+    </section>
+  </main>
+  <Footer />
 </Layout>

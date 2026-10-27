@@ -2,12 +2,13 @@ import {sanityClient} from 'sanity:client';
 import {defineQuery} from 'groq';
 
 const contentQuery = defineQuery(`{
+  "siteImages": *[_type == "siteImages"] | order(_updatedAt desc)[0]{heroBackground, heroFeatured, profilePortrait, aboutPortrait},
   "collections": *[_type == "collection" && category in ["concerts", "portraits", "street"]] | order(_updatedAt desc) {
     _id, title, category, description, cover,
-    "photos": photos[defined(asset._ref)]{_key, asset, crop, hotspot, alt}
+    "photos": photos[defined(asset._ref)]{_key, asset, crop, hotspot, alt, title, category}
   },
   "book": *[_type == "bookHero"] | order(_updatedAt desc)[0] {
-    "photos": photos[defined(asset._ref)]{_key, asset, crop, hotspot, alt}
+    "photos": photos[defined(asset._ref)]{_key, asset, crop, hotspot, alt, title, category}
   }
 }`);
 

@@ -1,22 +1,24 @@
 ---
 // src/components/About.astro
-import { Image } from 'astro:assets';
+import Image from './PortfolioImage.astro';
+import { getPortfolio } from '../data/content.js';
+const { siteImages } = await getPortfolio();
 import lucasContactImg from '../assets/images/lucas2.png';
 ---
 
-<section id="about" class="py-12 sm:py-16 lg:py-20 px-6 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.15fr] gap-8 lg:gap-10 items-center">
+<section id="about" class="py-10 sm:py-12 lg:py-16 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.15fr] gap-7 lg:gap-9 items-center">
 
-       <figure class="relative flex justify-center lg:justify-end w-full">
+       <figure class="relative flex justify-center lg:justify-end w-full" data-reveal>
     <Image
-        src={lucasContactImg}
+        src={siteImages.aboutPortrait?.asset ? siteImages.aboutPortrait : lucasContactImg}
         alt="Lucas - Photographer & Videographer"
         class="about-image w-full max-w-[440px] h-auto object-contain rounded-2xl shadow-2xl"
     />
 </figure>
 
         <!-- COLUMNA 2: ABOUT CONTENT -->
-        <div class="space-y-6">
+        <div class="space-y-4" data-reveal>
 
             <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white uppercase">
                 Capturing moments & telling stories through the lens.
