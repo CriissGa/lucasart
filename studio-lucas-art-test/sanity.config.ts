@@ -12,10 +12,17 @@ export default defineConfig({
 
   plugins: [structureTool({structure: (S) => S.list().title('Contenido').items([
     S.listItem().title('Imágenes del sitio').child(S.document().schemaType('siteImages').documentId('siteImages')),
-    ...S.documentTypeListItems().filter((item) => item.getId() !== 'siteImages'),
+    S.listItem().title('BookHero').child(S.document().schemaType('bookHero').documentId('24b4812d-561f-4e8d-a88f-91bce619453c').title('Fotos del libro')),
+    ...S.documentTypeListItems().filter((item) => !['siteImages', 'bookHero'].includes(item.getId() ?? '')),
   ])}), visionTool()],
 
   schema: {
     types: schemaTypes,
+  },
+  document: {
+    newDocumentOptions: (options) => options.filter((option) => !['siteImages', 'bookHero'].includes(option.templateId)),
+    actions: (actions, context) => ['siteImages', 'bookHero'].includes(context.schemaType)
+      ? actions.filter((action) => !['duplicate', 'delete', 'unpublish'].includes(action.action ?? ''))
+      : actions,
   },
 })
