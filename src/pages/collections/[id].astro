@@ -5,12 +5,9 @@ import Footer from '../../components/Footer.astro';
 import Image from '../../components/PortfolioImage.astro';
 import { getPortfolio } from '../../data/content.js';
 
-// Astro genera una ruta por serie a partir de la selección central.
-export async function getStaticPaths() {
-  const { collections } = await getPortfolio();
-  return collections.map((collection) => ({ params: { id: collection.id }, props: { collection } }));
-}
-const { collection } = Astro.props;
+const { collections } = await getPortfolio(Astro.locals);
+const collection = collections.find((item) => item.id === Astro.params.id);
+if (!collection) return Astro.rewrite('/404');
 ---
 
 <Layout title={`${collection.title} | Lucas Taylor Photography`} description={collection.description}>

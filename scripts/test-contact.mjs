@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import nodemailer from 'nodemailer';
-import handler from '../api/contact.js';
+import handler from '../src/lib/contact-handler.js';
 
 // Exercise delivery without sending any real email or requiring secrets.
 const originalTransport = nodemailer.createTransport;

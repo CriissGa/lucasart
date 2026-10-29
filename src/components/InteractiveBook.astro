@@ -2,7 +2,7 @@
 import Image from './PortfolioImage.astro';
 import { getPortfolio } from '../data/content.js';
 import { collections } from '../data/portfolio';
-const { book } = await getPortfolio();
+const { book } = await getPortfolio(Astro.locals);
 
 // Esta lista decide qué diez fotos aparecen y en qué orden se leen las páginas.
 // Cada entrada incluye su colección para que la galería final tenga enlaces útiles.

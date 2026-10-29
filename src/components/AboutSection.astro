@@ -2,7 +2,7 @@
 // src/components/About.astro
 import Image from './PortfolioImage.astro';
 import { getPortfolio } from '../data/content.js';
-const { siteImages } = await getPortfolio();
+const { siteImages } = await getPortfolio(Astro.locals);
 import lucasContactImg from '../assets/images/lucas2.webp';
 ---
 

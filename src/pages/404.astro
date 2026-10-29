@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+Astro.response.status = 404;
+---
+<Layout title="Page not found | Lucas Taylor Photography">
+  <Navbar />
+  <main class="section-wrap flex min-h-[75svh] flex-col items-start justify-center gap-6 pt-24">
+    <p class="eyebrow">404 / Page not found</p>
+    <h1 class="section-title">Frame not found.</h1>
+    <a class="button-primary" href="/collections">Explore the collections ↗</a>
+  </main>
+  <Footer />
+</Layout>

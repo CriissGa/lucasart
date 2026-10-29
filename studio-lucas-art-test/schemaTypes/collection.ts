@@ -12,9 +12,29 @@ export const collection = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'slug',
+      title: 'Website URL',
+      description: 'Click Generate after entering the name. This creates the collection page automatically; no code changes are needed.',
+      type: 'slug',
+      options: {source: 'title', maxLength: 96},
+      validation: (rule) => rule.custom(async (value, context) => {
+        const slug = value?.current || context.document?.category;
+        if (typeof slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return 'Generate a URL using lowercase letters, numbers and hyphens.';
+        const id = context.document?._id?.replace(/^drafts\./, '');
+        const count = await context.getClient({apiVersion: '2026-10-01'}).fetch(
+          'count(*[_type == "collection" && !(_id in [$id, $draftId]) && (slug.current == $slug || category == $slug)])',
+          {id, draftId: `drafts.${id}`, slug},
+        );
+        return count === 0 || 'This URL is already used by another collection.';
+      }),
+    }),
+    defineField({
       name: 'category',
-      title: 'Website section',
+      title: 'Original website section',
+      description: 'Preserved for existing collections. Use Website URL for new collections.',
       type: 'string',
+      readOnly: true,
+      hidden: ({value}) => value === undefined,
       options: {
         list: [
           {title: 'Concerts', value: 'concerts'},
@@ -22,7 +42,6 @@ export const collection = defineType({
           {title: 'Street', value: 'street'},
         ],
       },
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'description',

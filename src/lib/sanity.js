@@ -3,8 +3,8 @@ import {defineQuery} from 'groq';
 
 const contentQuery = defineQuery(`{
   "siteImages": *[_type == "siteImages"] | order(_updatedAt desc)[0]{heroBackground, heroFeatured, profilePortrait, aboutPortrait},
-  "collections": *[_type == "collection" && category in ["concerts", "portraits", "street"]] | order(_updatedAt desc) {
-    _id, title, category, description, cover,
+  "collections": *[_type == "collection"] | order(_updatedAt desc, _id asc) {
+    _id, title, category, "slug": slug.current, description, cover,
     "photos": photos[defined(asset._ref)]{_key, asset, crop, hotspot, alt, title, category}
   },
   "book": *[_type == "bookHero"] | order(_updatedAt desc)[0] {
@@ -12,8 +12,6 @@ const contentQuery = defineQuery(`{
   }
 }`);
 
-// Share one request during a build; development fetches again on each page load.
-let buildContent;
 async function fetchContent() {
   try {
     return await sanityClient.fetch(contentQuery, {}, {timeout: 10000, maxRetries: 1});
@@ -22,9 +20,10 @@ async function fetchContent() {
     return {collections: [], book: null, siteImages: null};
   }
 }
-export function getSanityContent() {
-  if (import.meta.env.DEV) return fetchContent();
-  return buildContent ??= fetchContent();
+// Share a request between components on this page, never between visitors.
+export function getSanityContent(locals) {
+  if (!locals) return fetchContent();
+  return locals.sanityContent ??= fetchContent();
 }
 
 export async function getCollection(category) {

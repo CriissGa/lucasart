@@ -3,7 +3,7 @@ import Image from './PortfolioImage.astro';
 import { getPortfolio } from '../data/content.js';
 import heroBackgroundFallback from '../assets/collections/concerts/DSC09979.webp';
 import heroFeaturedFallback from '../assets/collections/portraits/DSC03613.webp';
-const { siteImages } = await getPortfolio();
+const { siteImages } = await getPortfolio(Astro.locals);
 ---
 
 <section class="relative isolate min-h-[min(900px,100svh)] overflow-hidden bg-black text-white">

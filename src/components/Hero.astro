@@ -1,7 +1,7 @@
 ---
 import Image from './PortfolioImage.astro';
 import { getPortfolio } from '../data/content.js';
-const { siteImages } = await getPortfolio();
+const { siteImages } = await getPortfolio(Astro.locals);
 import lucasHeroImg from '../assets/images/lucas1.webp';
 ---
 <section class="section-wrap grid items-center gap-8 py-14 sm:py-18 lg:grid-cols-2 lg:gap-12 lg:py-20">

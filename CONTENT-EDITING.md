@@ -8,12 +8,14 @@ El proyecto combinado está en `C:\Projects\lucasart`. El diseño proviene de lu
 
 1. Abre el Studio (`cd studio-lucas-art-test` y `npm run dev`) e inicia sesión con una cuenta autorizada.
 2. En **Imágenes del sitio**, cambia el fondo y la foto destacada del inicio, el retrato del inicio y el retrato de Sobre mí.
-3. En **Collection**, cambia la portada y las fotos de Concerts, Portraits o Street. Arrastra las fotos para ordenarlas. Mantén una colección publicada por categoría.
+3. En **Collections**, cambia las portadas y fotos. Para crear una colección nueva, escribe el nombre y pulsa **Generate** en **Website URL**. Por ejemplo, Events and Nightlife → `events-and-nightlife`. Arrastra las fotos para ordenarlas. Cada colección debe tener una URL única.
 4. En **BookHero**, selecciona exactamente diez fotos, en orden. Cada foto permite descripción, título y enlace a una colección. Esta selección alimenta el libro interactivo.
 5. Ajusta el recorte y punto de enfoque y pulsa **Publish**.
 
 Los campos sin contenido y las galerías vacías usan la selección local de respaldo. Si falla la consulta a Sanity, la compilación utiliza los datos locales. Si una imagen de la CDN falla en el navegador, se sustituye por una WebP local; en galerías se asigna por posición y se repite la selección local si es necesario. El libro utiliza su selección local independiente de las colecciones publicadas.
 
-El sitio se genera de forma estática: publicar en Sanity requiere una nueva compilación y despliegue del sitio para reflejar cambios en producción. Ejecuta `npm run build` para generar `dist`. En el proveedor de alojamiento, configura un webhook de Sanity para activar ese despliegue al publicar. Aún no se ha configurado un proveedor ni un webhook desde este repositorio.
+La web se despliega desde GitHub a Vercel con el adaptador oficial de Astro y renderizado en el servidor. Las páginas consultan el contenido publicado de Sanity al abrirse, compartiendo una sola consulta entre sus componentes. Publicar fotos o colecciones no requiere otro push, webhook ni recompilación. Recarga la página para ver los cambios; los borradores permanecen ocultos.
+
+Los cambios de código sí requieren un push y un despliegue exitoso en Vercel. Usa el preset Astro y la salida del adaptador (`.vercel/output`); no fuerces `dist` como sitio estático. `npm run build` valida esa salida. Cloudflare no interviene en este flujo.
 
 Publica también el Studio actualizado con `npm run deploy` desde su carpeta cuando vayas a usar el panel alojado. Los cambios locales de esquema no actualizan por sí solos un Studio ya desplegado.
